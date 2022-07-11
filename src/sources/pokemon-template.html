@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #DADFE8;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/ceu.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .pokedex {
+            display: flex;
+            gap: 30px;
+            padding: 30px 0;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        .tarjeta-pokemon {
+            display: none;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+            border-radius: 10px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .tarjeta-pokemon .tarjeta-tipo {
+            padding: 30px 40px 0;
+            background-image: url(https://lucasbernardol.github.io/devmap-pokedex/public/assets/overlay.png);
+            background-size: 90%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .tarjeta-pokemon .nombre {
+            margin-bottom: 5px;
+        }
+
+        .tarjeta-pokemon .tipo {
+            font-size: 12px;
+            background-color: #FFFFFF;
+            opacity: 0.7;
+            border-radius: 10px;
+            padding: 2px 10px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+        .tarjeta-pokemon .detalles {
+            color: #FFFFFF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tarjeta-pokemon .tarjeta-imagem {
+            width: 350px;
+            height: 350px;
+        }
+
+        .tarjeta-pokemon img {
+            max-height: 100%;
+        }
+
+        .tarjeta-pokemon .tarjeta-informacoes {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ffffff;
+            padding: 80px 30px 50px;
+            margin-top: -70px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .tarjeta-pokemon .tarjeta-informacoes h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #b9b9b9;
+        }
+
+        .tarjeta-pokemon .tarjeta-informacoes .stats,
+        .tarjeta-pokemon .tarjeta-informacoes .abilities {
+            padding: 0 10px;
+            width: 180px;
+        }
+
+        .tarjeta-pokemon .tarjeta-informacoes .stats ul li,
+        .tarjeta-pokemon .tarjeta-informacoes .abilities ul li {
+            border-bottom: 1px solid #dbdbdb;
+            padding: 0 0 5px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .tarjeta-pokemon.abierto {
+            display: block;
+        }
+
+        .tipo-Electric {
+            background-color: #fcc719a2;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/raio.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+        
+        .tipo-Steel, .tipo-Rock, .tipo-Ground {
+            background-color: #5c4f1e85;
+            background-image: url(https://www.downloadclipart.net/large/rock-png-transparent.png);
+            background-size: 140%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Grass, .tipo-Bug {
+            background-color: #49d0b1a4;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/folha.png);
+            background-size: 180%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Fire {
+            background-color: #ed8a8cad;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/fogo.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Normal, .tipo-Fighting {
+            background-color: #76bcfe8a;
+            background-image: url(https://raw.githubusercontent.com/revertemayene/mapadevweek-pokedex/main/src/assets/image/floresta.png);
+            background-size: 180%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Water {
+            background-color: #76bcfe8a;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/agua.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Ice {
+            background-color: #76bcfe8a;
+            background-image: url(http://clipart-library.com/img/1639418.png);
+            background-size: 200%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Ghost, .tipo-Dark, .tipo-Psychic, .tipo-Poison, .tipo-Fairy {
+            background-color: #ba68c85b;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/trevas.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+        
+        .tipo-Dragon {
+            background-color: #c2979191;
+            background-image: url(https://revertemayene.github.io/mapadevweek-pokedex/src/assets/image/meteoro.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .listagem {
+            max-width: 200px;
+
+        }
+
+        .listagem .pokemon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background-color: #4a525c6c;
+            color: #FFFFFF;
+            padding: 0 5px;
+            cursor: pointer;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            min-height: 70px;
+            box-shadow: rgba(255, 255, 255, 0.459) 0px 20px 25px -5px, rgba(18, 143, 45, 0.363) 0px 10px 10px -5px;
+            transition: 0.15s ease-in-out;
+        }
+
+        .listagem .pokemon:hover {
+            transform: scale(1.05);
+        }
+
+        .listagem .pokemon img {
+            width: 25%;
+            border-radius: 50%;
+        }
+
+        .listagem .pokemon span {
+            padding-right: 20px;
+        }
+
+        .listagem .pokemon.ativo {
+            background-color: #FA6668;
+        }
+
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div class="pokedex">
+            <div class="tarjetas-pokemon">
+                <div class="tarjeta-pokemon abierto tipo-{{types.0.name}}">
+
+                    <div class="tarjeta-tipo">
+
+                        <div class="detalles">
+                            <h2 class="nombre">{{name}}</h2>
+                            <span>#{{id}}</span>
+                        </div>
+
+                        {{#each types}}
+                        <span class="tipo">{{name}}</span>
+                        {{/each}}
+
+                        <div class="tarjeta-imagem">
+                            <img src={{image}} alt="Imagen del pokemón">
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-informacoes">
+                        <div class="stats">
+                            <h3>Stats</h3>
+                            <ul>
+                                {{#each stats}}
+                                <li>{{name}}: {{value}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+
+                        <div class="abilities">
+                            <h3>Abilities</h3>
+                            <ul>
+                                {{#each abilities}}
+                                <li>{{name}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

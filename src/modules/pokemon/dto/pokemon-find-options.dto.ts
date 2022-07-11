@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsOptional, IsInt, Min } from 'class-validator';
 
-export class PokemonDTO {
+export class PokemonFindOptionsDTO {
   @IsOptional()
   @Transform(({ value }) => value.trim().toLowerCase())
   readonly searchTerm?: string;
