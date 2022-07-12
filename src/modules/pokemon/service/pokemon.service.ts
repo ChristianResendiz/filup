@@ -3,7 +3,7 @@ import { map, mergeAll, skip, take, toArray } from 'rxjs/operators';
 import { firstValueFrom, from, Observable } from 'rxjs';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as pdf from 'html-pdf-node-ts';
+import * as puppeteer from 'puppeteer';
 import handlebars from 'handlebars';
 import { PokeApiService } from 'src/services/pokeapi.service';
 import { PokemonNameDTO } from '../dto/pokemon-name.dto';
@@ -98,10 +98,11 @@ export class PokemonService {
         name: this.toTitleCase(ability.name),
       })),
     });
-    const file = await pdf.generatePdf(
-      { content: result },
-      { printBackground: true, format: 'A4' },
-    );
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.setContent(result);
+    const file = await page.pdf({ format: 'letter', printBackground: true });
+    await browser.close();
 
     res.set({
       'Content-Type': 'application/pdf',
